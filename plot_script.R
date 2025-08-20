@@ -451,7 +451,7 @@ combined_opening_brain <- (
     wrap_elements(plot_opening_left_medial) |
     wrap_elements(plot_opening_right_lateral) |
     wrap_elements(plot_opening_right_medial)
-) + plot_annotation(title = "Opening Brain Plots")
+) + plot_annotation(title = "Opening (Width)")
 
 print(combined_opening_brain)
 
@@ -466,7 +466,7 @@ combined_depth_brain <- (
     wrap_elements(plot_depth_left_medial) |
     wrap_elements(plot_depth_right_lateral) |
     wrap_elements(plot_depth_right_medial)
-)
+) + plot_annotation(title = "Mean Depth")
 
 print(combined_depth_brain)
 
@@ -480,7 +480,7 @@ combined_surface_brain <- (
     wrap_elements(plot_surface_left_medial) |
     wrap_elements(plot_surface_right_lateral) |
     wrap_elements(plot_surface_right_medial)
-)
+) + plot_annotation(title = "Surface Area")
 
 print(combined_surface_brain)
 
@@ -494,7 +494,7 @@ combined_length_brain <- (
     wrap_elements(plot_length_left_medial) |
     wrap_elements(plot_length_right_lateral) |
     wrap_elements(plot_length_right_medial)
-)
+) + plot_annotation(title = "Length")
 
 print(combined_length_brain)
 
@@ -502,69 +502,3 @@ save_combined_plot(
   plot = combined_length_brain,
   filename = "combined_length_brain.png"
 )
-
-# # color bar ################################################################################
-# my_palette <- c("grey90", "yellow", "gold", "orange", 
-#                 "darkorange", "orangered", "red", 
-#                 "firebrick", "darkred")
-# 
-# colorbar <- plot_colorbar(my_palette, min_val = global_range[1], max_val = global_range[2], caption = expression(-log[10](p)))
-# 
-# 
-# # final figure ################################################################################
-# # # Top part: stack brain views vertically
-# # top_part <- (
-# #   combined_opening_brain /
-# #     combined_depth_brain /
-# #     combined_surface_brain /
-# #     combined_length_brain
-# # )
-# 
-# 
-# label_width <- wrap_elements(full = textGrob("Width", gp = gpar(fontsize = 30), just = "center"))
-# label_depth <- wrap_elements(full = textGrob("Depth", gp = gpar(fontsize = 30), just = "center"))
-# label_surface <- wrap_elements(full = textGrob("Surface Area", gp = gpar(fontsize = 30), just = "center"))
-# label_length <- wrap_elements(full = textGrob("Length", gp = gpar(fontsize = 30), just = "center"))
-# 
-# 
-# # Top column labels
-# label_left  <- ggdraw() + draw_label("Left", size = 30)
-# label_right <- ggdraw() + draw_label("Right", size = 30)
-# empty_label <- plot_spacer()  # blank space above row labels
-# 
-# # Assemble top row: empty corner + Left + Right
-# #top_row <- empty_label + label_left + label_right +
-# #  plot_layout(widths = c(0.15, 0.5, 0.5))  # 0.15 for row label column
-# 
-# label_left_wrapped <- wrap_elements(label_left)
-# label_right_wrapped <- wrap_elements(label_right)
-# 
-# top_row <- empty_label | label_left_wrapped | label_right_wrapped + plot_layout(widths = c(0.15, 0.5, 0.5))
-# 
-# print(top_row)
-# 
-# # Now assemble each metric row: [label + full plot row]
-# row1 <- label_width  + combined_opening_brain + plot_layout(widths = c(0.15, 1))
-# row2 <- label_depth  + combined_depth_brain   + plot_layout(widths = c(0.15, 1))
-# row3 <- label_surface + combined_surface_brain + plot_layout(widths = c(0.15, 1))
-# row4 <- label_length + combined_length_brain + plot_layout(widths = c(0.15, 1))
-# 
-# # Combine all together: top header + 4 labeled rows
-# final_plot <- top_row / row1 / row2 / row3 / row4 +
-#   plot_layout(heights = c(0.1, 1, 1, 1, 1))  # adjust top row height
-# 
-# # Bottom row: center a narrow colorbar using spacers
-# bottom_row <- (
-#   plot_spacer() + 
-#     colorbar + 
-#     plot_spacer()
-# ) + plot_layout(ncol = 3, widths = c(0.3, 0.3, 0.3))  # define layout here
-# 
-# # Combine all
-# combined_all <- (
-#   final_plot /
-#     bottom_row
-# ) + 
-#   plot_layout(heights = c(0.3, 1, 1, 1, 1, 0.3))  # adjust height to control thickness of colorbar
-
-
