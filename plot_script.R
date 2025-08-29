@@ -1,3 +1,5 @@
+# Developer: Mahan Shafie
+
 # Set working directory
 current_dir <- getwd()
 new_dir <- file.path(current_dir)
