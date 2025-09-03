@@ -17,13 +17,14 @@ The plots can be generated for each measure separately or all four at once.
 - ENIGMA Imaging Protocols (ENIGMA-Sulci): https://enigma.ini.usc.edu/protocols/imaging-protocols/
 
 ---
+
 ## Installation
 
 ```r
 # install.packages("remotes")
 remotes::install_github("mhnshf/sulcimap")
 library(sulcimap)
-
+```
 ---
 
 ## Input Data
@@ -56,9 +57,19 @@ If a sulcus is **not available**, assign the value **0**.
 
 ## Usage
 
-See **`sample_use.R`** for a full example of using `plot_sulci()` function.  
+See documentation for a full example of using `plot_sulci()` function:
 
-
+```r
+plot_out <- plot_sulci(
+  sulcus_values = df,
+  palette       = "gyr",
+  value_range   = NULL,
+  save_dir      = "output",
+  measure       = "all",
+  show_colorbar = TRUE,
+  caption       = expression(-log[10](p))
+)
+```
 **Argument details**
 
 - **`sulcus_values`** *(data.frame)*  
