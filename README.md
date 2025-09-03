@@ -1,6 +1,6 @@
-# Sulcal Measure Plotting
+# sulcimap
 
-This repository provides an R function **`plot_sulci()`** to visualize **sulcal measures** based on BrainVISA output and the ENIGMA sulcal protocol.  
+This library provides an R function **`plot_sulci()`** to visualize **sulcal measures** based on BrainVISA output and the ENIGMA sulcal protocol.  
 
 It generates publication-ready plots of sulcal statistics/values for **492 sulcal measures**, including:  
 - **123 sulci** across the whole brain (62 left, 61 right)  
@@ -17,8 +17,17 @@ The plots can be generated for each measure separately or all four at once.
 - ENIGMA Imaging Protocols (ENIGMA-Sulci): https://enigma.ini.usc.edu/protocols/imaging-protocols/
 
 ---
+## Installation
+
+```r
+# install.packages("remotes")
+remotes::install_github("mhnshf/sulcimap")
+library(sulcimap)
+
+---
 
 ## Input Data
+# You can also load a CSV shipped with the package.
 
 The input must be a **CSV file** with **two columns**:
 
@@ -95,13 +104,13 @@ See **`sample_use.R`** for a full example of using `plot_sulci()` function.
 
 If you use this code in your research, please cite:
 
-> *Sulcal Measure Plotting. GitHub repository (2025).*
+> *sulcimap: Plot sulcal measures on brain. GitHub repository (2025). https://github.com/mhnshf/sulcimap*
 
 ---
 
 ## License
 
-Specify license.
+MIT License (see LICENSE).
 
 ---
 
