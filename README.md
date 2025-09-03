@@ -28,8 +28,6 @@ library(sulcimap)
 ---
 
 ## Input Data
-# You can also load a CSV shipped with the package.
-
 The input must be a **CSV file** with **two columns**:
 
 | Sulcus                                | Value |
