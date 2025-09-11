@@ -49,7 +49,7 @@ The input must be a **CSV file** with **two columns**:
 
 If a sulcus is **not available**, assign the value **0**.  
 
-👉 For the complete list of sulcus name tags and input sample, see [`template_input.csv`](template_input.csv) and [`input_data_example.csv`](input_data_example.csv)
+👉 For the complete list of sulcus name tags and input sample, see [`template_input.csv`](inst/exdata/template_input.csv) and [`input_data_example.csv`](inst/exdata/input_data_example.csv)
 
 ---
 
@@ -71,7 +71,8 @@ plot_out <- plot_sulci(
 **Argument details**
 
 - **`sulcus_values`** *(data.frame)*  
-  A two-column data frame with `Sulcus` and `Value`. `Sulcus` must include all 492 BrainVISA-style tags (left/right × 4 types). Missing types should have `Value = 0`.
+  Either (1) a two-column dataframe with `Sulcus` and `Value`, or (2) a path to a CSV file containing those columns.
+  `Sulcus` must include all 492 BrainVISA-style tags (left/right × 4 types). Missing types should have `Value = 0`.
 
 - **`palette`** *(character)*  
   The color palette used to map values and colorbar.  

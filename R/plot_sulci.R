@@ -2,10 +2,11 @@
 #'
 #' Generates composite brain figures (left/right × lateral/medial) by mapping sulcal values.
 #'
-#' @param sulcus_values data.frame
-#'   A two-column data frame with `Sulcus` and `Value`.
+#' @param sulcus_values data.frame or path/to/csv
+#'   Either (1) a two-column dataframe with `Sulcus` and `Value`, or
+#'   (2) a path to a CSV file containing those columns.
 #'   `Sulcus` must use BrainVISA-style tags (left/right × 4 types) and include all
-#'   expected names. Missing sulcus should have `Value = 0`.
+#'   expected names. Missing sulcus should have `Value = 0` (check out README and data samples).
 #' @param palette character
 #'   The color palette used to map values and the colorbar. Options include
 #'   `"viridis"`, `"magma"`, `"plasma"`, `"inferno"`, `"cividis"`, `"heat"`, `"gyr"`.
@@ -88,7 +89,17 @@ plot_sulci <- function(
     bg_info        <- magick::image_info(background_img)
 
     if (is.null(value_range)) value_range <- range(sulcus_values, na.rm = TRUE)
-    remapped <- round(scales::rescale(sulcus_values, to = c(1, 1000), from = value_range))
+
+    # Map to [1,1000] and keep out-of-range values on the edges
+    remapped <- scales::rescale(
+      sulcus_values,
+      to   = c(1, 1000),
+      from = value_range,
+      oob  = scales::oob_squish
+    )
+    remapped <- as.integer(round(remapped))
+    remapped[!is.finite(remapped)] <- 1L
+    remapped <- pmin(pmax(remapped, 1L), 1000L)
 
     palette_map <- switch(
       palette,
@@ -136,8 +147,20 @@ plot_sulci <- function(
                      plot.margin = ggplot2::margin(t = 10, r = 40, b = 20, l = 40)) +
       ggplot2::annotate("text", x = -0.02, y = 1, label = min_val, hjust = 1, vjust = 0.5, size = 10) +
       ggplot2::annotate("text", x = 1.02,  y = 1, label = max_val, hjust = 0, vjust = 0.5, size = 10) +
-      { if (!is.null(caption)) ggplot2::annotate("text", x = 0.5, y = 0.85, label = caption,
-                                                 hjust = 0.5, vjust = 1, size = 10) }
+      {
+        if (!is.null(caption)) {
+          if (is.expression(caption)) {
+            # Turn expression into a plotmath string and ask ggplot to parse it
+            cap_chr <- as.character(caption)                 # "expression(-log[10](p))"
+            cap_chr <- sub("^expression\\((.*)\\)$", "\\1", cap_chr)  # "-log[10](p)"
+            ggplot2::annotate("text", x = 0.5, y = 0.85, label = cap_chr,
+                              hjust = 0.5, vjust = 1, size = 10, parse = TRUE)
+          } else {
+            ggplot2::annotate("text", x = 0.5, y = 0.85, label = as.character(caption),
+                              hjust = 0.5, vjust = 1, size = 10)
+          }
+        }
+      }
   }
 
   # ---- assets & inputs ----
@@ -167,6 +190,17 @@ plot_sulci <- function(
   )
   stopifnot(all(file.exists(unlist(bgs))))
 
+  # ---- coerce input: allow CSV path or data.frame ----
+  if (is.character(sulcus_values) && length(sulcus_values) == 1L && file.exists(sulcus_values)) {
+    # read as CSV; keep original column names intact
+    sulcus_values <- utils::read.csv(sulcus_values, check.names = FALSE, stringsAsFactors = FALSE)
+  } else if (inherits(sulcus_values, "tbl_df")) {
+    # tibble -> plain data.frame to be safe
+    sulcus_values <- as.data.frame(sulcus_values, stringsAsFactors = FALSE)
+  } else if (!is.data.frame(sulcus_values)) {
+    stop("`sulcus_values` must be a data.frame or a path to a CSV file.")
+  }
+
   # ---- split metrics ----
   df <- sulcus_values
   stopifnot(all(c("Sulcus", "Value") %in% names(df)))
@@ -177,9 +211,12 @@ plot_sulci <- function(
   names(df_opening) <- names(df_depth) <- names(df_surface) <- names(df_length) <- c("Sulcus", "Value")
 
   nv <- function(x, order_names) {
-    x_in <- x[x$Sulcus %in% order_names, ]
-    x_in <- x_in[match(order_names, x_in$Sulcus), ]
-    stats::setNames(x_in$Value, x_in$Sulcus)
+    # Initialize all expected sulci with 0 (as per your docs)
+    out <- stats::setNames(rep(0, length(order_names)), order_names)
+    m <- match(order_names, x$Sulcus)
+    hit <- !is.na(m)
+    out[hit] <- x$Value[m[hit]]
+    out
   }
 
   sulc_vals <- list(
@@ -216,6 +253,11 @@ plot_sulci <- function(
     r[2] <- ceiling(r[2] * 2) / 2
     r
   } else value_range
+
+  # ---- validate range ----
+  if (!is.numeric(rng) || length(rng) != 2 || any(!is.finite(rng)) || rng[1] >= rng[2]) {
+    stop("`value_range` must be NULL or numeric length-2 with min < max.")
+  }
 
   # ---- per-view builder ----
   make_view_plot <- function(vals, side) {
