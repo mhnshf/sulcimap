@@ -1,6 +1,8 @@
 # sulcimap
 
-This library provides an R function **`plot_sulci()`** to visualize **sulcal measures** based on BrainVISA output and the ENIGMA sulcal protocol.  
+zenodo DOI
+
+An R library for mapping cortical folding patterns. This library provides a high-level R function **`plot_sulci()`** to visualize **sulcal measures** based on BrainVISA output and the ENIGMA sulcal protocol.  
 
 It generates publication-ready plots of sulcal statistics/values for **492 sulcal measures**, including:  
 - **123 sulci** across the whole brain (62 left, 61 right)  
@@ -10,13 +12,27 @@ It generates publication-ready plots of sulcal statistics/values for **492 sulca
   - Surface area → `.surface_native`  
   - Length → `.hull_junction_length_native`  
 
+![All four measures](inst/figures/figure_01.png)
+
+*Figure 1. All four measures.*
+
 The plots can be generated for each measure separately or all four at once.
 
+![Depth](inst/figures/figure_02.png)
+
+*Figure 2. Depth.*
+
 **References & links**  
-- BrainVISA: https://brainvisa.info/web/  
-- ENIGMA Imaging Protocols (ENIGMA-Sulci): https://enigma.ini.usc.edu/protocols/imaging-protocols/
+- [BrainVISA](https://brainvisa.info/web/)
+- [ENIGMA Imaging Protocols (ENIGMA-Sulci)](https://enigma.ini.usc.edu/protocols/imaging-protocols/)
 
 ---
+
+[About](#about) | [News](#news) | [Installation](#installation) | [Input Data](#input-data) | [Usage](#Usage) | [License](#license) | [Citation](#citation) | [Visualization examples](#visualization-examples)
+
+## About
+
+## News
 
 ## Installation
 
@@ -50,8 +66,6 @@ The input must be a **CSV file** with **two columns**:
 If a sulcus is **not available**, assign the value **0**.  
 
 👉 For the complete list of sulcus name tags and input sample, see [`template_input.csv`](inst/exdata/template_input.csv) and [`input_data_example.csv`](inst/exdata/input_data_example.csv)
-
----
 
 ## Usage
 
@@ -99,7 +113,6 @@ plot_out <- plot_sulci(
 - **`caption`** *(character)*  
   Label displayed under/along the color bar. You can pass a plain string (e.g., `"P-value"`) or an R expression for mathematical notation.
 
----
 
 ## Output Examples
 - **All measures combined** (`measure = "all"`)  
@@ -108,7 +121,10 @@ plot_out <- plot_sulci(
 - **Opening (width)** (`measure = "opening"`)  
   ![Opening](output/example_opening.png)
 
----
+## License
+
+The *sulcimap* package is [free software], published under the [MIT license](https://opensource.org/licenses/MIT).
+See the file [LICENSE_FULL](./LICENSE_FULL) for the full license text.
 
 ## Citation
 
@@ -116,15 +132,19 @@ If you use this code in your research, please cite:
 
 > *sulcimap: Plot sulcal measures on brain. GitHub repository (2025). https://github.com/mhnshf/sulcimap*
 
----
+## Related R packages
 
-## License
+R packages for brain visualization:
 
-MIT License (see LICENSE).
+* [ggseg](https://github.com/LCBC-UiO/ggseg) by Athanasia Mowinckel and Didac Vidal-Piñeiro: Plotting of atlas-based neuroimaging data in R.
 
----
+* [fsbrain](https://github.com/dfsp-spirit/fsbrain) by Tim Schäfer: Visualizing  surface-based brain morphometry data in R
 
 ## Acknowledgments
 
 - ENIGMA Consortium – sulcal-based morphometry protocol.  
 - BrainVISA – Neuroimaging software platform for sulcal-based morphometry.
+
+## Author
+
+sulcimap was written by Mahan Shafie
