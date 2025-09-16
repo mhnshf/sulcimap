@@ -114,7 +114,7 @@ plot_out <- plot_sulci(
 ## License
 
 The *sulcimap* package is a free software, published under the [MIT license](https://opensource.org/licenses/MIT).
-See the file [LICENSE](./LICENSE) for the full license text.
+See the file [LICENSE](./LICENSE.md) for the full license text.
 
 ## Citation
 
