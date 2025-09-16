@@ -12,15 +12,7 @@ It generates publication-ready plots of sulcal statistics/values for **492 sulca
   - Surface area → `.surface_native`  
   - Length → `.hull_junction_length_native`  
 
-![All four measures](inst/figures/figure_01.png)
-
-*Figure 1. All four measures.*
-
 The plots can be generated for each measure separately or all four at once.
-
-![Depth](inst/figures/figure_02.png)
-
-*Figure 2. Depth.*
 
 **References & links**  
 - [BrainVISA](https://brainvisa.info/web/)
@@ -28,11 +20,10 @@ The plots can be generated for each measure separately or all four at once.
 
 ---
 
-[About](#about) | [News](#news) | [Installation](#installation) | [Input Data](#input-data) | [Usage](#Usage) | [License](#license) | [Citation](#citation) | [Visualization examples](#visualization-examples)
-
-## About
+[News](#news) | [Installation](#installation) | [Input Data](#input-data) | [Usage](#Usage) |  [Output Examples](#output-examples) | [License](#license) | [Citation](#citation) |
 
 ## News
+2025-09-16: sulcimap version 1.0.0 released on GitHub.
 
 ## Installation
 
@@ -41,7 +32,6 @@ The plots can be generated for each measure separately or all four at once.
 remotes::install_github("mhnshf/sulcimap")
 library(sulcimap)
 ```
----
 
 ## Input Data
 The input must be a **CSV file** with **two columns**:
@@ -65,7 +55,7 @@ The input must be a **CSV file** with **two columns**:
 
 If a sulcus is **not available**, assign the value **0**.  
 
-👉 For the complete list of sulcus name tags and input sample, see [`template_input.csv`](inst/exdata/template_input.csv) and [`input_data_example.csv`](inst/exdata/input_data_example.csv)
+👉 For the complete list of sulcus name tags and input sample, see [`template_input.csv`](inst/extdata/template_input.csv) and [`input_data_example.csv`](inst/extdata/input_data_example.csv)
 
 ## Usage
 
@@ -116,15 +106,15 @@ plot_out <- plot_sulci(
 
 ## Output Examples
 - **All measures combined** (`measure = "all"`)  
-  ![All Measures](output/example_all.png)
+![All four measures](inst/figures/figure_01.png)
 
 - **Opening (width)** (`measure = "opening"`)  
-  ![Opening](output/example_opening.png)
+![Depth](inst/figures/figure_02.png)
 
 ## License
 
-The *sulcimap* package is [free software], published under the [MIT license](https://opensource.org/licenses/MIT).
-See the file [LICENSE_FULL](./LICENSE_FULL) for the full license text.
+The *sulcimap* package is a free software, published under the [MIT license](https://opensource.org/licenses/MIT).
+See the file [LICENSE](./LICENSE) for the full license text.
 
 ## Citation
 
