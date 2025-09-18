@@ -1,6 +1,17 @@
+# R build artifacts
 .Rproj.user
 .Rhistory
 .RData
 .Ruserdata
-./output
-.Rplots.pdf
+
+# Package build output
+*.tar.gz
+*.Rcheck/
+
+# Dev-only
+raw_images/
+example_data/
+
+# Cache
+inst/extdata/assets/
+inst/extdata/assets.zip  # optional if you don't want the zip in Git, but usually you keep it

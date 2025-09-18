@@ -1,6 +1,6 @@
 Package: sulcimap
-Title: Plot sulcal measures on brain
-Version: 0.0.0.9000
+Title: Mapping Brain Folding Patterns
+Version: 1.0.0
 Authors@R: 
     person(given = "Mahan",
            family = "Shafie",
@@ -11,14 +11,19 @@ Description: Create composite, publication-quality brain figures to map sulcal v
 License: MIT + file LICENSE
 Encoding: UTF-8
 Roxygen: list(markdown = TRUE)
-RoxygenNote: 7.3.2
-URL: https://github.com/<your-user>/sulcimap
-BugReports: https://github.com/<your-user>/sulcimap/issues
-Depends: R (>= 3.6)
+RoxygenNote: 7.3.3
+Depends: R (>= 4.0)
 Imports:
+    utils,
+    tools,
     magick,
-    scales,
-    viridisLite,
     ggplot2,
+    viridisLite,
+    scales,
     patchwork,
-    cowplot
+    cowplot,
+    grid,
+    grDevices
+Suggests: 
+    testthat (>= 3.0.0)
+Config/testthat/edition: 3

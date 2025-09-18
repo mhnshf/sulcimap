@@ -1,3 +1,11 @@
-^sulcimap\.Rproj$
+^.*\.Rproj$
 ^\.Rproj\.user$
 ^LICENSE\.md$
+^README\.md$
+^cran-comments\.md$
+^\.github$
+^raw_images/
+^example_data/
+^README_files/
+^rd2pdf\.log$
+^CRAN-SUBMISSION$

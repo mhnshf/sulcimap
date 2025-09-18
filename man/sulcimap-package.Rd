@@ -4,17 +4,9 @@
 \name{sulcimap-package}
 \alias{sulcimap}
 \alias{sulcimap-package}
-\title{sulcimap: Plot sulcal measures on brain}
+\title{sulcimap: Mapping Brain Folding Patterns}
 \description{
 Create composite, publication-quality brain figures to map sulcal values.
-}
-\seealso{
-Useful links:
-\itemize{
-  \item \url{https://github.com/<your-user>/sulcimap}
-  \item Report bugs at \url{https://github.com/<your-user>/sulcimap/issues}
-}
-
 }
 \author{
 \strong{Maintainer}: Mahan Shafie \email{mahan.shafie@unito.it}

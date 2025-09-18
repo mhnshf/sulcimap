@@ -1,51 +1,55 @@
 #' Plot sulcal measures on brain
 #'
-#' Generates composite brain figures (left/right × lateral/medial) by mapping sulcal values.
+#' Generates composite brain figures (left/right lateral/medial) by mapping sulcal values.
 #'
 #' @param sulcus_values data.frame or path/to/csv
-#'   Either (1) a two-column dataframe with `Sulcus` and `Value`, or
+#'   Either (1) a two-column dataframe with \code{Sulcus} and \code{Value}, or
 #'   (2) a path to a CSV file containing those columns.
-#'   `Sulcus` must use BrainVISA-style tags (left/right × 4 types) and include all
-#'   expected names. Missing sulcus should have `Value = 0` (check out README and data samples).
+#'   \code{Sulcus} must use BrainVISA-style tags (left/right, 4 types) and include all
+#'   expected names. Missing sulcus should have \code{Value = 0} (see README and data samples).
 #' @param palette character
-#'   The color palette used to map values and the colorbar. Options include
-#'   `"viridis"`, `"magma"`, `"plasma"`, `"inferno"`, `"cividis"`, `"heat"`, `"gyr"`.
-#' @param value_range numeric length-2 or NULL (default `NULL`)
+#'   Color palette for mapping values and the colorbar. Options include
+#'   \code{"viridis"}, \code{"magma"}, \code{"plasma"}, \code{"inferno"}, \code{"cividis"}, \code{"heat"}, \code{"gyr"}.
+#' @param value_range numeric length-2 or NULL (default \code{NULL})
 #'   Controls the color scale.
-#'   * `NULL`: auto-scale from the min/max of the provided values.
-#'   * `c(min, max)`: fix the scale across plots/conditions for comparability.
-#' @param save_dir character or NULL (default `NULL`)
+#'   \itemize{
+#'     \item \code{NULL}: auto-scale from the min/max of the provided values.
+#'     \item \code{c(min, max)}: fix the scale across plots/conditions for comparability.
+#'   }
+#' @param save_dir character or NULL (default \code{NULL})
 #'   Directory where the plot image(s) are saved. If it does not exist, it will
-#'   be created. Set to `NULL` to skip saving and only return the plot object.
+#'   be created. Set to \code{NULL} to skip saving and only return the plot object.
 #' @param measure character
 #'   What to plot:
-#'   * `"all"`: generate all four measures in one figure.
-#'   * `"opening"`, `"depth"`, `"surface"`, `"length"`: generate a single-measure plot.
-#' @param show_colorbar logical
-#'   Show or hide the color bar on the figure.
+#'   \itemize{
+#'     \item \code{"all"}: generate all four measures in one figure.
+#'     \item \code{"opening"}, \code{"depth"}, \code{"surface"}, \code{"length"}: generate a single-measure plot.
+#'   }
+#' @param show_colorbar logical Show or hide the color bar on the figure.
 #' @param caption character or expression
-#'   Label displayed with the color bar. Pass a plain string (e.g., `"P-value"`)
-#'   or an R expression for mathematical notation (e.g., `expression(-log[10](p))`).
-#' @param ... Advanced options (rarely needed):
-#'   `base_dir` (path to assets; default is package assets),
-#'   `scale_width` (magick scale, default "1000x"),
-#'   `file_prefix` (default "sulci"),
-#'   `width_in`, `height_in` (inches; defaults 14, 8),
-#'   `dpi` (default 300).
+#'   Label displayed with the color bar. For math, use e.g. \code{expression(-log[10](p))}.
+#' @param ... Advanced options:
+#'   \code{base_dir} (path to assets),
+#'   \code{scale_width} (magick scale, default "1000x"),
+#'   \code{file_prefix} (default "sulci"),
+#'   \code{width_in}, \code{height_in} (inches; defaults 14, 8),
+#'   \code{dpi} (default 300).
 #'
 #' @examples
-#' \dontrun{
-#' plot_out <- plot_sulci(
-#'   sulcus_values = df,
-#'   palette       = "gyr",
-#'   value_range   = NULL,
-#'   save_dir      = "output",
-#'   measure       = "opening",
-#'   show_colorbar = TRUE,
-#'   caption       = expression(-log[10](p))
-#' )
+#' \donttest{
+#' # df should have columns: Sulcus, Value (BrainVISA-style names with suffixes)
+#' # plot_out <- plot_sulci(
+#' #   sulcus_values = df,
+#' #   palette       = "gyr",
+#' #   value_range   = NULL,
+#' #   save_dir      = NULL,
+#' #   measure       = "opening",
+#' #   show_colorbar = TRUE,
+#' #   caption       = expression(-log[10](p))
+#' # )
 #' }
 #' @export
+
 plot_sulci <- function(
     sulcus_values,
     palette       = "gyr",
@@ -57,7 +61,7 @@ plot_sulci <- function(
     ...
 ) {
   # ---- hidden defaults (overridable if desired) ----
-  base_dir    <- system.file("assets", package = "sulcimap")
+  base_dir    <- get_sulcimap_assets_dir()  # lazy unzip on first use
   scale_width <- "1000x"
   file_prefix <- "sulci"
   width_in    <- 14
@@ -150,9 +154,8 @@ plot_sulci <- function(
       {
         if (!is.null(caption)) {
           if (is.expression(caption)) {
-            # Turn expression into a plotmath string and ask ggplot to parse it
-            cap_chr <- as.character(caption)                 # "expression(-log[10](p))"
-            cap_chr <- sub("^expression\\((.*)\\)$", "\\1", cap_chr)  # "-log[10](p)"
+            cap_chr <- as.character(caption)
+            cap_chr <- sub("^expression\\((.*)\\)$", "\\1", cap_chr)
             ggplot2::annotate("text", x = 0.5, y = 0.85, label = cap_chr,
                               hjust = 0.5, vjust = 1, size = 10, parse = TRUE)
           } else {
@@ -163,7 +166,7 @@ plot_sulci <- function(
       }
   }
 
-  # ---- assets & inputs ----
+  # ---- assets & inputs (from extracted cache) ----
   name_files <- list(
     left_lateral  = file.path(base_dir, "leftlat_files",  "leftlatnames.txt"),
     left_medial   = file.path(base_dir, "leftmed_files",  "leftmednames.txt"),
@@ -192,10 +195,8 @@ plot_sulci <- function(
 
   # ---- coerce input: allow CSV path or data.frame ----
   if (is.character(sulcus_values) && length(sulcus_values) == 1L && file.exists(sulcus_values)) {
-    # read as CSV; keep original column names intact
     sulcus_values <- utils::read.csv(sulcus_values, check.names = FALSE, stringsAsFactors = FALSE)
   } else if (inherits(sulcus_values, "tbl_df")) {
-    # tibble -> plain data.frame to be safe
     sulcus_values <- as.data.frame(sulcus_values, stringsAsFactors = FALSE)
   } else if (!is.data.frame(sulcus_values)) {
     stop("`sulcus_values` must be a data.frame or a path to a CSV file.")
@@ -208,10 +209,13 @@ plot_sulci <- function(
   df_depth   <- subset(df, grepl("\\.meandepth_native$", Sulcus));            df_depth$Sulcus   <- sub("\\.meandepth_native$", "", df_depth$Sulcus)
   df_surface <- subset(df, grepl("\\.surface_native$", Sulcus));              df_surface$Sulcus <- sub("\\.surface_native$", "", df_surface$Sulcus)
   df_length  <- subset(df, grepl("\\.hull_junction_length_native$", Sulcus)); df_length$Sulcus  <- sub("\\.hull_junction_length_native$", "", df_length$Sulcus)
-  names(df_opening) <- names(df_depth) <- names(df_surface) <- names(df_length) <- c("Sulcus", "Value")
+
+  names(df_opening) <- c("Sulcus", "Value")
+  names(df_depth)   <- c("Sulcus", "Value")
+  names(df_surface) <- c("Sulcus", "Value")
+  names(df_length)  <- c("Sulcus", "Value")
 
   nv <- function(x, order_names) {
-    # Initialize all expected sulci with 0 (as per your docs)
     out <- stats::setNames(rep(0, length(order_names)), order_names)
     m <- match(order_names, x$Sulcus)
     hit <- !is.na(m)

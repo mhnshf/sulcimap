@@ -16,13 +16,14 @@ plot_sulci(
 )
 }
 \arguments{
-\item{sulcus_values}{data.frame
-A two-column data frame with \code{Sulcus} and \code{Value}.
-\code{Sulcus} must use BrainVISA-style tags (left/right × 4 types) and include all
-expected names. Missing sulcus should have \code{Value = 0}.}
+\item{sulcus_values}{data.frame or path/to/csv
+Either (1) a two-column dataframe with \code{Sulcus} and \code{Value}, or
+(2) a path to a CSV file containing those columns.
+\code{Sulcus} must use BrainVISA-style tags (left/right, 4 types) and include all
+expected names. Missing sulcus should have \code{Value = 0} (see README and data samples).}
 
 \item{palette}{character
-The color palette used to map values and the colorbar. Options include
+Color palette for mapping values and the colorbar. Options include
 \code{"viridis"}, \code{"magma"}, \code{"plasma"}, \code{"inferno"}, \code{"cividis"}, \code{"heat"}, \code{"gyr"}.}
 
 \item{value_range}{numeric length-2 or NULL (default \code{NULL})
@@ -43,33 +44,32 @@ What to plot:
 \item \code{"opening"}, \code{"depth"}, \code{"surface"}, \code{"length"}: generate a single-measure plot.
 }}
 
-\item{show_colorbar}{logical
-Show or hide the color bar on the figure.}
+\item{show_colorbar}{logical Show or hide the color bar on the figure.}
 
 \item{caption}{character or expression
-Label displayed with the color bar. Pass a plain string (e.g., \code{"P-value"})
-or an R expression for mathematical notation (e.g., \code{expression(-log[10](p))}).}
+Label displayed with the color bar. For math, use e.g. \code{expression(-log[10](p))}.}
 
-\item{...}{Advanced options (rarely needed):
-\code{base_dir} (path to assets; default is package assets),
+\item{...}{Advanced options:
+\code{base_dir} (path to assets),
 \code{scale_width} (magick scale, default "1000x"),
 \code{file_prefix} (default "sulci"),
 \code{width_in}, \code{height_in} (inches; defaults 14, 8),
 \code{dpi} (default 300).}
 }
 \description{
-Generates composite brain figures (left/right × lateral/medial) by mapping sulcal values.
+Generates composite brain figures (left/right lateral/medial) by mapping sulcal values.
 }
 \examples{
-\dontrun{
-plot_out <- plot_sulci(
-  sulcus_values = df,
-  palette       = "gyr",
-  value_range   = NULL,
-  save_dir      = "output",
-  measure       = "opening",
-  show_colorbar = TRUE,
-  caption       = expression(-log[10](p))
-)
+\donttest{
+# df should have columns: Sulcus, Value (BrainVISA-style names with suffixes)
+# plot_out <- plot_sulci(
+#   sulcus_values = df,
+#   palette       = "gyr",
+#   value_range   = NULL,
+#   save_dir      = NULL,
+#   measure       = "opening",
+#   show_colorbar = TRUE,
+#   caption       = expression(-log[10](p))
+# )
 }
 }
