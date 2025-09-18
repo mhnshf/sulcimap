@@ -1,7 +1,5 @@
 # sulcimap
 
-zenodo DOI
-
 An R library for mapping cortical folding patterns. This library provides a high-level R function **`plot_sulci()`** to visualize **sulcal measures** based on BrainVISA output and the ENIGMA sulcal protocol.  
 
 It generates publication-ready plots of sulcal statistics/values for **492 sulcal measures**, including:  
@@ -108,7 +106,7 @@ plot_out <- plot_sulci(
 - **All measures combined** (`measure = "all"`)  
 ![All four measures](inst/figures/figure_01.png)
 
-- **Opening (width)** (`measure = "opening"`)  
+- **Depth** (`measure = "depth"`)  
 ![Depth](inst/figures/figure_02.png)
 
 ## License
