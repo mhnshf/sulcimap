@@ -1,6 +1,6 @@
 Package: sulcimap
 Title: Mapping Brain Folding Patterns
-Version: 1.0.1
+Version: 1.0.2
 Authors@R: 
     person(given = "Mahan",
            family = "Shafie",

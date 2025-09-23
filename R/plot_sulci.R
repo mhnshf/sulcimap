@@ -41,24 +41,27 @@
 #'   and the function (invisibly) returns a character vector with the path(s) to the saved file(s).
 #'
 #' @examples
-#' # Minimal executable example
+#' # Minimal executable example using assets_light
 #' ex <- data.frame(
 #'   Sulcus = c("S.C._left.opening", "S.C._right.opening",
 #'   "F.C.L.p._left.opening", "F.C.L.p._right.opening",
 #'   "S.F.int._left.opening", "S.F.int._right.opening",
 #'   "F.Coll._left.opening", "F.Coll._right.opening"),
-#'   Value  = c(1, 0.5, 0.5, 1, 1, 0.5, 0.5, 1)
+#'   Value  = c(1, 0.5, 0.6, 0.8, 1, 0.4, 0.7, 1)
 #' )
+#' assets_light <- sulcimap:::get_assets_light()
 #' p <- plot_sulci(
 #'   sulcus_values = ex,
 #'   measure       = "opening",
 #'   palette       = "gyr",
 #'   show_colorbar = FALSE,
+#'   base_dir      = assets_light,
 #'   save_dir      = NULL
 #' )
 #' # p is a ggplot/patchwork object; printing it will draw the figure.
 #'
 #' \donttest{
+#' # Full example
 #' # df should have columns: Sulcus (BrainVISA-style names with suffixes), Value
 #' # plot_out <- plot_sulci(
 #' #  sulcus_values = df,
