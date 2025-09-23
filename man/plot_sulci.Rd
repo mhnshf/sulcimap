@@ -69,10 +69,8 @@ Generates composite brain figures (left/right lateral/medial) by mapping sulcal 
 # Minimal executable example using assets_light
 ex <- data.frame(
   Sulcus = c("S.C._left.opening", "S.C._right.opening",
-  "F.C.L.p._left.opening", "F.C.L.p._right.opening",
-  "S.F.int._left.opening", "S.F.int._right.opening",
-  "F.Coll._left.opening", "F.Coll._right.opening"),
-  Value  = c(1, 0.5, 0.6, 0.8, 1, 0.4, 0.7, 1)
+  "S.F.int._left.opening", "S.F.int._right.opening"),
+  Value  = c(1, 0.5, 0.8, 0.4)
 )
 assets_light <- sulcimap:::get_assets_light()
 p <- plot_sulci(
