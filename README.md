@@ -130,9 +130,9 @@ R packages for brain visualization:
 
 ## Acknowledgments
 
-- ENIGMA Consortium – sulcal-based morphometry protocol.  
+- ENIGMA Consortium – sulcal-based morphometry protocol developed by Fabrizio Pizzagalli.  
 - BrainVISA – Neuroimaging software platform for sulcal-based morphometry.
+- Special thanks to [William Snyder](https://github.com/willsnyder12) for sharing his experience and insights on sulci visualization.
 
 ## Author
-
 sulcimap was written by Mahan Shafie

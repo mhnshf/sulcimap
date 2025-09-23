@@ -35,17 +35,39 @@
 #'   \code{width_in}, \code{height_in} (inches; defaults 14, 8),
 #'   \code{dpi} (default 300).
 #'
+#' @return If \code{save_dir = NULL}, returns a \code{ggplot} (or \code{patchwork}) object
+#'   representing the brain figure, which can be further modified and saved.
+#'   If \code{save_dir} is not \code{NULL}, the plot image(s) are automatically saved in that directory
+#'   and the function (invisibly) returns a character vector with the path(s) to the saved file(s).
+#'
 #' @examples
+#' # Minimal executable example
+#' ex <- data.frame(
+#'   Sulcus = c("S.C._left.opening", "S.C._right.opening",
+#'   "F.C.L.p._left.opening", "F.C.L.p._right.opening",
+#'   "S.F.int._left.opening", "S.F.int._right.opening",
+#'   "F.Coll._left.opening", "F.Coll._right.opening"),
+#'   Value  = c(1, 0.5, 0.5, 1, 1, 0.5, 0.5, 1)
+#' )
+#' p <- plot_sulci(
+#'   sulcus_values = ex,
+#'   measure       = "opening",
+#'   palette       = "gyr",
+#'   show_colorbar = FALSE,
+#'   save_dir      = NULL
+#' )
+#' # p is a ggplot/patchwork object; printing it will draw the figure.
+#'
 #' \donttest{
-#' # df should have columns: Sulcus, Value (BrainVISA-style names with suffixes)
+#' # df should have columns: Sulcus (BrainVISA-style names with suffixes), Value
 #' # plot_out <- plot_sulci(
-#' #   sulcus_values = df,
-#' #   palette       = "gyr",
+#' #  sulcus_values = df,
+#' #    palette       = "gyr",
 #' #   value_range   = NULL,
-#' #   save_dir      = NULL,
-#' #   measure       = "opening",
-#' #   show_colorbar = TRUE,
-#' #   caption       = expression(-log[10](p))
+#' #  save_dir      = NULL,
+#' #    measure       = "opening",
+#' #    show_colorbar = TRUE,
+#' #    caption       = expression(-log[10](p))
 #' # )
 #' }
 #' @export
@@ -292,21 +314,27 @@ plot_sulci <- function(
       c("grey90","yellow","gold","orange","darkorange","orangered","red","firebrick","darkred")
     )
     colorbar <- plot_colorbar(my_palette, min_val = rng[1], max_val = rng[2], caption = caption)
-    bottom_row <- (patchwork::plot_spacer() + colorbar + patchwork::plot_spacer()) +
-      patchwork::plot_layout(ncol = 3, widths = c(0.3, 0.3, 0.3))
+    bottom_row <- patchwork::wrap_plots(
+      patchwork::plot_spacer(), colorbar, patchwork::plot_spacer(),
+      ncol = 3, widths = c(0.3, 0.3, 0.3)
+    )
   }
 
-  # ---- build grids + titles ----
+  # ---- build grids + titles (no operator syntax) ----
   build_metric_grid <- function(metric) {
     mvals <- sulc_vals[[metric]]
-    ( make_view_plot(mvals, "left_lateral") | make_view_plot(mvals, "left_medial")
-      | make_view_plot(mvals, "right_lateral") | make_view_plot(mvals, "right_medial") )
+    patchwork::wrap_plots(
+      make_view_plot(mvals, "left_lateral"),
+      make_view_plot(mvals, "left_medial"),
+      make_view_plot(mvals, "right_lateral"),
+      make_view_plot(mvals, "right_medial"),
+      ncol = 4
+    )
   }
 
   title_plot  <- function(txt) cowplot::ggdraw() + cowplot::draw_label(txt, size = 30, fontface = "bold")
   metric_title <- function(metric) switch(metric,
-                                          opening = "Width", depth = "Depth", surface = "Surface Area", length = "Length"
-  )
+                                          opening = "Width", depth = "Depth", surface = "Surface Area", length = "Length")
 
   title_font_size <- 22
   if (match.arg(measure) == "all") {
@@ -318,28 +346,40 @@ plot_sulci <- function(
     label_right   <- cowplot::ggdraw() + cowplot::draw_label("Right", size = title_font_size)
     empty_label   <- patchwork::plot_spacer()
 
-    top_row <- empty_label + label_left + label_right + patchwork::plot_layout(widths = c(0.15, 0.5, 0.5))
+    top_row <- patchwork::wrap_plots(
+      empty_label, label_left, label_right,
+      ncol = 3, widths = c(0.15, 0.5, 0.5)
+    )
 
     combined_opening_brain <- build_metric_grid("opening")
     combined_depth_brain   <- build_metric_grid("depth")
     combined_surface_brain <- build_metric_grid("surface")
     combined_length_brain  <- build_metric_grid("length")
 
-    row1 <- label_width   + combined_opening_brain + patchwork::plot_layout(widths = c(0.15, 1))
-    row2 <- label_depth   + combined_depth_brain   + patchwork::plot_layout(widths = c(0.15, 1))
-    row3 <- label_surface + combined_surface_brain + patchwork::plot_layout(widths = c(0.15, 1))
-    row4 <- label_length  + combined_length_brain  + patchwork::plot_layout(widths = c(0.15, 1))
+    row1 <- patchwork::wrap_plots(label_width,   combined_opening_brain, ncol = 2, widths = c(0.15, 1))
+    row2 <- patchwork::wrap_plots(label_depth,   combined_depth_brain,   ncol = 2, widths = c(0.15, 1))
+    row3 <- patchwork::wrap_plots(label_surface, combined_surface_brain, ncol = 2, widths = c(0.15, 1))
+    row4 <- patchwork::wrap_plots(label_length,  combined_length_brain,  ncol = 2, widths = c(0.15, 1))
 
-    final_plot <- top_row / row1 / row2 / row3 / row4 + patchwork::plot_layout(heights = c(0.1, 1, 1, 1, 1))
+    final_plot <- patchwork::wrap_plots(
+      top_row, row1, row2, row3, row4,
+      ncol = 1, heights = c(0.1, 1, 1, 1, 1)
+    )
+
     combined_all <- if (isTRUE(show_colorbar)) {
-      (final_plot / (patchwork::plot_spacer() + colorbar + patchwork::plot_spacer())) +
-        patchwork::plot_layout(heights = c(0.3, 1, 1, 1, 1, 0.3))
+      patchwork::wrap_plots(
+        final_plot,
+        patchwork::wrap_plots(patchwork::plot_spacer(), colorbar, patchwork::plot_spacer(), ncol = 3),
+        ncol = 1, heights = c(1, 0.3)
+      )
     } else final_plot
 
     if (!is.null(save_dir)) {
       if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE, showWarnings = FALSE)
-      ggplot2::ggsave(file.path(save_dir, sprintf("%s_all.png", file_prefix)),
-                      plot = combined_all, width = width_in, height = height_in, dpi = dpi)
+      out_path <- file.path(save_dir, sprintf("%s_all.png", file_prefix))
+      ggplot2::ggsave(out_path, plot = combined_all, width = width_in, height = height_in, dpi = dpi)
+      message("Plot saved to: ", out_path)
+      return(invisible(out_path))
     }
     return(combined_all)
   }
@@ -348,17 +388,26 @@ plot_sulci <- function(
   grid_plot <- build_metric_grid(measure)
 
   out_plot <- if (isTRUE(show_colorbar)) {
-    title_plot(metric_title(measure)) / grid_plot / bottom_row +
-      patchwork::plot_layout(heights = c(0.15, 1, 0.25))
+    patchwork::wrap_plots(
+      title_plot(metric_title(measure)),
+      grid_plot,
+      bottom_row,
+      ncol = 1, heights = c(0.15, 1, 0.25)
+    )
   } else {
-    title_plot(metric_title(measure)) / grid_plot +
-      patchwork::plot_layout(heights = c(0.15, 1))
+    patchwork::wrap_plots(
+      title_plot(metric_title(measure)),
+      grid_plot,
+      ncol = 1, heights = c(0.15, 1)
+    )
   }
 
   if (!is.null(save_dir)) {
     if (!dir.exists(save_dir)) dir.create(save_dir, recursive = TRUE, showWarnings = FALSE)
-    ggplot2::ggsave(file.path(save_dir, sprintf("%s_%s.png", file_prefix, measure)),
-                    plot = out_plot, width = width_in, height = height_in, dpi = dpi)
+    out_path <- file.path(save_dir, sprintf("%s_%s.png", file_prefix, measure))
+    ggplot2::ggsave(out_path, plot = out_plot, width = width_in, height = height_in, dpi = dpi)
+    message("Plot saved to: ", out_path)
+    return(invisible(out_path))
   }
   out_plot
 }

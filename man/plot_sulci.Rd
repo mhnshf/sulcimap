@@ -56,20 +56,43 @@ Label displayed with the color bar. For math, use e.g. \code{expression(-log[10]
 \code{width_in}, \code{height_in} (inches; defaults 14, 8),
 \code{dpi} (default 300).}
 }
+\value{
+If \code{save_dir = NULL}, returns a \code{ggplot} (or \code{patchwork}) object
+representing the brain figure, which can be further modified and saved.
+If \code{save_dir} is not \code{NULL}, the plot image(s) are automatically saved in that directory
+and the function (invisibly) returns a character vector with the path(s) to the saved file(s).
+}
 \description{
 Generates composite brain figures (left/right lateral/medial) by mapping sulcal values.
 }
 \examples{
+# Minimal executable example
+ex <- data.frame(
+  Sulcus = c("S.C._left.opening", "S.C._right.opening",
+  "F.C.L.p._left.opening", "F.C.L.p._right.opening",
+  "S.F.int._left.opening", "S.F.int._right.opening",
+  "F.Coll._left.opening", "F.Coll._right.opening"),
+  Value  = c(1, 0.5, 0.5, 1, 1, 0.5, 0.5, 1)
+)
+p <- plot_sulci(
+  sulcus_values = ex,
+  measure       = "opening",
+  palette       = "gyr",
+  show_colorbar = FALSE,
+  save_dir      = NULL
+)
+# p is a ggplot/patchwork object; printing it will draw the figure.
+
 \donttest{
-# df should have columns: Sulcus, Value (BrainVISA-style names with suffixes)
+# df should have columns: Sulcus (BrainVISA-style names with suffixes), Value
 # plot_out <- plot_sulci(
-#   sulcus_values = df,
-#   palette       = "gyr",
+#  sulcus_values = df,
+#    palette       = "gyr",
 #   value_range   = NULL,
-#   save_dir      = NULL,
-#   measure       = "opening",
-#   show_colorbar = TRUE,
-#   caption       = expression(-log[10](p))
+#  save_dir      = NULL,
+#    measure       = "opening",
+#    show_colorbar = TRUE,
+#    caption       = expression(-log[10](p))
 # )
 }
 }
