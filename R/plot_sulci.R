@@ -47,7 +47,7 @@
 #'   "S.F.int._left.opening", "S.F.int._right.opening"),
 #'   Value  = c(1, 0.5, 0.8, 0.4)
 #' )
-#' assets_light <- sulcimap:::get_assets_light()
+#' assets_light <- sulcimap::get_assets_light()
 #' p <- plot_sulci(
 #'   sulcus_values = ex,
 #'   measure       = "opening",
