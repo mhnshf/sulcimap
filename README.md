@@ -1,4 +1,5 @@
 # sulcimap
+[![DOI](https://zenodo.org/badge/DOI/10.5281/zenodo.17131054.svg)](https://doi.org/10.5281/zenodo.17131054)
 
 An R library for mapping cortical folding patterns. This library provides a high-level R function **`plot_sulci()`** to visualize **sulcal measures** based on BrainVISA output and the ENIGMA sulcal protocol.  
 
@@ -22,9 +23,15 @@ The plots can be generated for each measure separately or all four at once.
 
 ## News
 2025-09-16: sulcimap version 1.0.0 released on GitHub.
+2025-10-06: sulcimap version 1.0.4 released on CRAN and GitHub.
 
 ## Installation
+You can install this package directly from CRAN:
+```r
+install.packages("sulcimap")
+```
 
+Or install the development version from GitHub:
 ```r
 # install.packages("remotes")
 remotes::install_github("mhnshf/sulcimap")
@@ -116,9 +123,19 @@ See the file [LICENSE](./LICENSE.md) for the full license text.
 
 ## Citation
 
-If you use this code in your research, please cite:
+To cite sulcimap in publications use:
 
-> *sulcimap: Plot sulcal measures on brain. GitHub repository (2025). https://github.com/mhnshf/sulcimap*
+> *Mahan Shafie, Fabrizio Pizzagalli (2025). sulcimap: An R library for mapping cortical folding patterns. https://doi.org/10.5281/zenodo.17131054*
+
+A BibTeX entry for LaTeX users is:
+
+> *@Misc{,
+>   title  = {sulcimap: An {R} library for mapping cortical folding patterns},
+>   author = {Mahan Shafie and Fabrizio Pizzagalli},
+>   year   = {2025},
+>   url    = {https://doi.org/10.5281/zenodo.17131054},
+>   doi    = {10.5281/zenodo.17131054},
+> }*
 
 ## Related R packages
 
