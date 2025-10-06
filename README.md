@@ -135,4 +135,4 @@ R packages for brain visualization:
 - Special thanks to [William Snyder](https://github.com/willsnyder12) for sharing his experience and insights on sulci visualization.
 
 ## Author
-sulcimap was written by Mahan Shafie
+sulcimap was written by Mahan Shafie/Fabrizio Pizzagalli
