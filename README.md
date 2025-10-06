@@ -22,7 +22,7 @@ The plots can be generated for each measure separately or all four at once.
 [News](#news) | [Installation](#installation) | [Input Data](#input-data) | [Usage](#Usage) |  [Output Examples](#output-examples) | [License](#license) | [Citation](#citation) |
 
 ## News
-2025-09-16: sulcimap version 1.0.0 released on GitHub.
+2025-09-16: sulcimap version 1.0.0 released on GitHub.  
 2025-10-06: sulcimap version 1.0.4 released on CRAN and GitHub.
 
 ## Installation
@@ -128,15 +128,15 @@ To cite sulcimap in publications use:
 > *Mahan Shafie, Fabrizio Pizzagalli (2025). sulcimap: An R library for mapping cortical folding patterns. https://doi.org/10.5281/zenodo.17131054*
 
 A BibTeX entry for LaTeX users is:
-
-> *@Misc{,
->   title  = {sulcimap: An {R} library for mapping cortical folding patterns},
->   author = {Mahan Shafie and Fabrizio Pizzagalli},
->   year   = {2025},
->   url    = {https://doi.org/10.5281/zenodo.17131054},
->   doi    = {10.5281/zenodo.17131054},
-> }*
-
+```
+@Misc{,
+   title  = {sulcimap: An {R} library for mapping cortical folding patterns},
+   author = {Mahan Shafie and Fabrizio Pizzagalli},
+   year   = {2025},
+   url    = {https://doi.org/10.5281/zenodo.17131054},
+   doi    = {10.5281/zenodo.17131054},
+ }
+```
 ## Related R packages
 
 R packages for brain visualization:
